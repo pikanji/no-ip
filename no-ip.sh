@@ -151,11 +151,12 @@ then
 	NOIPURL="${NOIPURL}myip=$IP"
 fi
 
-
+COUNTER=0
 while :
 do
 
 	RESULT=$(curl -s -H "$AUTHHEADER" -A "$USERAGENT" "$NOIPURL")
+	let "COUNTER++"
 
 	if [ -z "$RESULT" ] && [ $? -ne 0 ]
 	then
@@ -203,6 +204,10 @@ do
 	then
 		break
 	else
+		if [ $COUNTER -gt 5 ]
+		then
+			break
+		fi
 		sleep "${INTERVAL}m" 
 	fi
 
